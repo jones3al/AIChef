@@ -1,7 +1,7 @@
-using ChefAI.Shared;
+using AIChef.Shared;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ChefAI.Server.Controllers
+namespace AIChef.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
