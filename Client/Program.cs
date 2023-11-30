@@ -1,8 +1,8 @@
-using ChefAI.Client;
+using AIChef.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace ChefAI.Client
+namespace AIChef.Client
 {
     public class Program
     {

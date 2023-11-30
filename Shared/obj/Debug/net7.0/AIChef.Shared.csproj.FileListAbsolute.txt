@@ -1,0 +1,11 @@
+C:\Users\214862\AIChef\Shared\bin\Debug\net7.0\AIChef.Shared.deps.json
+C:\Users\214862\AIChef\Shared\bin\Debug\net7.0\AIChef.Shared.dll
+C:\Users\214862\AIChef\Shared\bin\Debug\net7.0\AIChef.Shared.pdb
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\AIChef.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\AIChef.Shared.AssemblyInfoInputs.cache
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\AIChef.Shared.AssemblyInfo.cs
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\AIChef.Shared.csproj.CoreCompileInputs.cache
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\AIChef.Shared.dll
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\refint\AIChef.Shared.dll
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\AIChef.Shared.pdb
+C:\Users\214862\AIChef\Shared\obj\Debug\net7.0\ref\AIChef.Shared.dll

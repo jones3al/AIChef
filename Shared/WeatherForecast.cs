@@ -1,4 +1,4 @@
-namespace ChefAI.Shared
+namespace AIChef.Shared
 {
     public class WeatherForecast
     {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.ResponseCompression;
 
-namespace ChefAI
+namespace AIChef
 {
     public class Program
     {
