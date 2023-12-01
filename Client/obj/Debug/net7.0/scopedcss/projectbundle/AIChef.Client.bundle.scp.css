@@ -195,3 +195,16 @@ main[b-kajv6wuk1q] {
         overflow-y: auto;
     }
 }
+/* /Shared/TopNavLayout.razor.rz.scp.css */
+main[b-okwnooqecs]{
+    flex: 1 0 auto;
+}
+
+footer[b-okwnooqecs]{
+    flex-shrink: 0;
+    background-color: var(--bs-success-bg-subtle);
+}
+/* /Shared/TopNavMenu.razor.rz.scp.css */
+.topNavbg[b-wmwyxsecrm]{
+    background-color: var(--bs-success-bg-subtle);
+}

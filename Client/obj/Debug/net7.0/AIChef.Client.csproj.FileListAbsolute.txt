@@ -835,3 +835,5 @@ C:\Users\214862\AIChef\Client\obj\Debug\net7.0\refint\AIChef.Client.dll
 C:\Users\214862\AIChef\Client\obj\Debug\net7.0\AIChef.Client.pdb
 C:\Users\214862\AIChef\Client\obj\Debug\net7.0\ref\AIChef.Client.dll
 C:\Users\214862\AIChef\Client\obj\Debug\net7.0\scopedcss\Pages\Index.razor.rz.scp.css
+C:\Users\214862\AIChef\Client\obj\Debug\net7.0\scopedcss\Shared\TopNavLayout.razor.rz.scp.css
+C:\Users\214862\AIChef\Client\obj\Debug\net7.0\scopedcss\Shared\TopNavMenu.razor.rz.scp.css
