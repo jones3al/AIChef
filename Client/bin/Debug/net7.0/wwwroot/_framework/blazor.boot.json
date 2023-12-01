@@ -199,14 +199,14 @@
       "netstandard.dll": "sha256-urq+e2ZQXxmOWMRxTR92529HnUVu6+kyVnfF6SoLad8=",
       "System.Private.CoreLib.dll": "sha256-ixnF\/wVKLHZM1N0lfJufpZ41EC2LvvyiSqdW43h3Xew=",
       "AIChef.Shared.dll": "sha256-WqEngKmjMESjqjPIrbByj3bOu7cJnedVRiw4TyDcvRU=",
-      "AIChef.Client.dll": "sha256-K+jbi2u3uRq0nI271oLRAWk\/imiWQPqRiry4j+v9u8U="
+      "AIChef.Client.dll": "sha256-qyRdUEuMCuxSayD7SIweizbrY9L0s36hoTBVp\/GqC8A="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
       "AIChef.Shared.pdb": "sha256-D66t6Aybx9eaUUOr6RPU68Z+m1bPc5Ts2X\/QXdniuO4=",
-      "AIChef.Client.pdb": "sha256-GwqdUq2wXVDcvYY\/r9AFamuKoi6Z4vn\/IeO3kmppe9I="
+      "AIChef.Client.pdb": "sha256-vQU+69I5L3MrZkQq5O9WHbefQOzOTiGfWOAlIaO4EoQ="
     },
     "runtime": {
       "dotnet.7.0.12.hfnw6qewwf.js": "sha256-cPJgWy8SjMaYFeimGkYy23ls+rDZVmoC\/eMoHpqRc+4=",

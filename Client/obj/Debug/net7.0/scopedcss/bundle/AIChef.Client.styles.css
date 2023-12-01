@@ -1,3 +1,49 @@
+/* /Pages/Index.razor.rz.scp.css */
+.page[b-bmqz7exemm]{
+    background-image: url(images/AIChefBG2.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: var(--bs-light);
+    font-size: 1.2rem;
+}
+
+.pagestyle[b-bmqz7exemm]{
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(3px) brightness(30%);
+    height: 100%;
+
+}
+
+main[b-bmqz7exemm]{
+    flex: 1 0 auto;
+
+}
+
+footer[b-bmqz7exemm]{
+    flex-shrink: 0;
+}
+
+.landingPage[b-bmqz7exemm]{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+a[b-bmqz7exemm]{
+    color: var(--bs-light);
+    text-decoration: none;    
+}
+
+a:visited[b-bmqz7exemm]{
+    color: var(--bs-light);
+}
 /* /Shared/MainLayout.razor.rz.scp.css */
 .page[b-kajv6wuk1q] {
     position: relative;
