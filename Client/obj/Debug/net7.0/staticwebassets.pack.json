@@ -13,18 +13,6 @@
       "PackagePath": "staticwebassets\\AIChef.Client.styles.css"
     },
     {
-      "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\AIChefBG2.png",
-      "PackagePath": "staticwebassets\\AIChefBG2.png"
-    },
-    {
-      "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\AiChefLogoDark.png",
-      "PackagePath": "staticwebassets\\AiChefLogoDark.png"
-    },
-    {
-      "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\AiChefLogoLight.png",
-      "PackagePath": "staticwebassets\\AiChefLogoLight.png"
-    },
-    {
       "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\android-chrome-192x192.png",
       "PackagePath": "staticwebassets\\android-chrome-192x192.png"
     },
@@ -99,6 +87,18 @@
     {
       "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\icon-192.png",
       "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\images\\AIChefBG2.png",
+      "PackagePath": "staticwebassets\\images\\AIChefBG2.png"
+    },
+    {
+      "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\images\\AiChefLogoDark.png",
+      "PackagePath": "staticwebassets\\images\\AiChefLogoDark.png"
+    },
+    {
+      "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\images\\AiChefLogoLight.png",
+      "PackagePath": "staticwebassets\\images\\AiChefLogoLight.png"
     },
     {
       "Id": "C:\\Users\\214862\\AIChef\\Client\\wwwroot\\index.html",

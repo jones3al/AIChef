@@ -1,9 +1,25 @@
 ﻿@page "/"
+@layout LandingPageLayout
 
-<PageTitle>Index</PageTitle>
+<PageTitle>AI Chef - Craft Your Next Meal</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div class="page">
+    <div class="pagestyle">
+        <nav class="row align-items-center p-2">
+            <div class="col text-end me-3">
+                <a href="https://www.linkedin.com/in/alexleejones/" target="_blank">About</a>
+            </div>
+        </nav>
+        <main class="LandingPage">
+            <div class="text-center">
+                <img src="images/AiChefLogoLight.png" height="300"/>
+            </div>
+            <div class="text-center mt-5">
+                <a href="/createmeal" class="btn btn-success btn-lg">Get Started</a>
+            </div>
+        </main>
+        <footer class="text-center p-2">
+            &copy; Alex Lee Jones 2023
+        </footer>
+    </div>
+</div>

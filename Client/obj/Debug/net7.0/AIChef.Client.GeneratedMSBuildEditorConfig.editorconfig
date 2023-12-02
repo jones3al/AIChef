@@ -24,12 +24,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/214862/AIChef/Client/Pages/CreateMeal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlTWVhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/214862/AIChef/Client/Pages/FetchData.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/214862/AIChef/Client/Pages/Index.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+[C:/Users/214862/AIChef/Client/Pages/MealIdeas.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWVhbElkZWFzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/214862/AIChef/Client/Shared/LandingPageLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExhbmRpbmdQYWdlTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/214862/AIChef/Client/Shared/SurveyPrompt.razor]
@@ -40,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/214862/AIChef/Client/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-bmqz7exemm
+
 [C:/Users/214862/AIChef/Client/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-kajv6wuk1q
@@ -47,3 +59,11 @@ build_metadata.AdditionalFiles.CssScope = b-kajv6wuk1q
 [C:/Users/214862/AIChef/Client/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-t4gcwwtbbs
+
+[C:/Users/214862/AIChef/Client/Shared/TopNavLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFRvcE5hdkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-okwnooqecs
+
+[C:/Users/214862/AIChef/Client/Shared/TopNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFRvcE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-wmwyxsecrm
