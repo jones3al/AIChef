@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIChef.Server", "Server\AIChef.Server.csproj", "{6C60C9E5-FDD2-43F6-8472-765630B8C35F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIChef.Server", "Server\AIChef.Server.csproj", "{6C60C9E5-FDD2-43F6-8472-765630B8C35F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIChef.Client", "Client\AIChef.Client.csproj", "{CBD34C45-E3AA-411D-98AD-BB260B3BAE3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIChef.Client", "Client\AIChef.Client.csproj", "{CBD34C45-E3AA-411D-98AD-BB260B3BAE3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIChef.Shared", "Shared\AIChef.Shared.csproj", "{7E0BBDF1-5707-4179-B044-A4F2499FE81F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIChef.Shared", "Shared\AIChef.Shared.csproj", "{7E0BBDF1-5707-4179-B044-A4F2499FE81F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
