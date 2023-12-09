@@ -23,7 +23,7 @@ namespace AIChef.Server.Controllers
         [HttpPost, Route("GetRecipeIdeas")]
         public async  Task<ActionResult<List<Idea>>> GetRecipeIdeas(RecipeParms recipeParms)
         {
-            string mealtime = recipeParms.MealTime;
+            string? mealtime = recipeParms.MealTime;
             List<string> ingredients = recipeParms.Ingredients
                                                   .Where(x => !string.IsNullOrEmpty(x.Description))
                                                   .Select(x=> x.Description!)
@@ -37,6 +37,36 @@ namespace AIChef.Server.Controllers
 
             return ideas;
             //return SampleData.RecipeIdeas;
+        }
+
+        [HttpPost, Route("GetRecipe")]
+        public async Task<ActionResult<Recipe?>> GetRecipe(RecipeParms recipeParms)
+        {
+            List<string> ingredients = recipeParms.Ingredients
+                                                  .Where(x => !string.IsNullOrEmpty(x.Description))
+                                                  .Select(x=> x.Description!)
+                                                  .ToList();
+
+            string? title = recipeParms.SelectedIdea;
+
+            if (string.IsNullOrEmpty(title) )
+            {
+                return BadRequest();
+            }
+
+            var recipe = await _openAIService.CreateRecipe(title, ingredients);
+            return recipe;
+
+            //return SampleData.Recipe;
+        }
+
+        [HttpGet, Route("GetRecipeImage")]
+        public async Task<RecipeImage> GetRecipeImage(string title)
+        {
+            var recipeImage = await _openAIService.CreateRecipeImage(title);
+
+            return recipeImage ?? SampleData.RecipeImage;
+            
         }
     }
 }

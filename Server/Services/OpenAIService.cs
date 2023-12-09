@@ -135,7 +135,7 @@ namespace AIChef.Server.Services
 
             string ingredients = string.Join(",", ingredientList);
 
-            if(string.IsNullOrEmpty(ingredients) )
+            if (string.IsNullOrEmpty(ingredients))
             {
                 ingredientPrompt = "Suggest some ingredients for me";
             }
@@ -159,26 +159,26 @@ namespace AIChef.Server.Services
 
             ChatRequest request = new ChatRequest()
             {
-                Model = "gpt-3.5-turbo-1106", 
-                Messages = new[] {systemMessage, userMessage},
+                Model = "gpt-3.5-turbo-1106",
+                Messages = new[] { systemMessage, userMessage },
                 Functions = new[] { _ideaFunction },
-                FunctionCall = new {Name = _ideaFunction.Name}
+                FunctionCall = new { Name = _ideaFunction.Name }
             };
 
             //make call to open ai
             HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
-            
+
             //get response
             ChatResponse? response = await httpResponse.Content.ReadFromJsonAsync<ChatResponse>();
 
             //get the first message in the function
-            ChatFunctionResponse? functionResponse = response.Choices?
-                                                            .FirstOrDefault(m => m.Message.FunctionCall is not null)?
+            ChatFunctionResponse? functionResponse = response?.Choices?
+                                                            .FirstOrDefault(m => m.Message?.FunctionCall is not null)?
                                                             .Message?
                                                             .FunctionCall;
             Result<List<Idea>>? ideaResult = new();
 
-            if(functionResponse?.Arguments is not null )
+            if (functionResponse?.Arguments is not null)
             {
                 try
                 {
@@ -189,15 +189,91 @@ namespace AIChef.Server.Services
 
                     ideaResult = new()
                     {
-                        Exception = ex, 
+                        Exception = ex,
                         ErrorMessage = await httpResponse.Content.ReadAsStringAsync()
                     };
                 }
-                
+
             }
 
             return ideaResult?.Data ?? new List<Idea>();
-            
+
+        }
+
+        public async Task<Recipe?> CreateRecipe(string title, List<string> ingredients)
+        {
+            string url = $"{_baseUrl}chat/completions";
+            string systemPrompt = "You are a world-renowned chef. Create the recipe with ingredients, instructions, and a summary";
+            string userPrompt = $"Create a {title} recipe.";
+
+            ChatMessage userMessage = new ChatMessage()
+            {
+                Role = "user",
+                Content = $"{systemPrompt} {userPrompt}"
+            };
+
+            ChatRequest request = new ChatRequest()
+            {
+                Model = "gpt-3.5-turbo-1106",
+                Messages = new[] { userMessage },
+                Functions = new[] { _recipeFunction },
+                FunctionCall = new { Name = _recipeFunction.Name }
+            };
+
+            HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
+
+            ChatResponse? response = await httpResponse.Content.ReadFromJsonAsync<ChatResponse?>();
+
+            ChatFunctionResponse? functionResponse = response?.Choices?
+                                                             .FirstOrDefault(m => m.Message?.FunctionCall is not null)?
+                                                             .Message?
+                                                             .FunctionCall;
+
+            Result<Recipe>? recipe = new();
+
+            if (functionResponse?.Arguments is not null)
+            {
+                try
+                {
+                    recipe = JsonSerializer.Deserialize<Result<Recipe>>(functionResponse.Arguments, _jsonOptions);
+                }
+                catch (Exception ex)
+                {
+                    recipe = new()
+                    {
+                        Exception = ex,
+                        ErrorMessage = await httpResponse.Content.ReadAsStringAsync()
+                    };
+                }
+            }
+
+            return recipe?.Data;
+        }
+
+        public async Task<RecipeImage?> CreateRecipeImage(string recipeTitle)
+        {
+            string url = $"{_baseUrl}images/generations";
+            string userPrompt = $"Create a restaurant product shot for {recipeTitle}";
+
+            ImageGenerationRequest request = new()
+            {
+                Prompt = userPrompt
+            };
+
+            HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
+
+            RecipeImage? recipeImage = null;
+
+            try
+            {
+                recipeImage = await httpResponse.Content.ReadFromJsonAsync<RecipeImage>();
+            }
+            catch
+            {
+                Console.WriteLine("Error: Recipe Image could not be retrieved");
+            }
+            return recipeImage;
+
         }
     }
 }

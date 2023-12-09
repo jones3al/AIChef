@@ -1,5 +1,6 @@
 ﻿@page "/mealideas"
 @using AIChef.Shared;
+@using AIChef.Client.Shared;
 @using System.Text.Json;
 @inject NavigationManager navigationManager;
 @inject HttpClient Http;
@@ -12,7 +13,7 @@
         <div class="list-group">
             @foreach (var idea in ideas)
             {
-                <button class="list-group-item list-group-item-action list-group-item-success p-2">
+                <button @onclick="() => GetRecipe(idea.Index)" class="list-group-item list-group-item-action list-group-item-success p-2">
                     <div class="d-flex w-100 justify-content-sm-between">
                         <h2 class="mb-1 fw-bold">@idea.Title</h2>
                     </div>
@@ -25,9 +26,7 @@
 }
 else
 {
-    <div class="container">
-        <p>Loading...</p>
-    </div>
+  <ChefSpinner></ChefSpinner>
  
 }
 
@@ -38,7 +37,7 @@ else
 
 
     [CascadingParameter]
-    private RecipeState rState { get; set; }
+    private RecipeState? rState { get; set; }
 
     private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions()
         {
@@ -95,5 +94,10 @@ else
         {
             Console.WriteLine("Error! Could not fetch recipe ideas");
         }
+    }
+
+    private void GetRecipe(int index)
+    {
+        navigationManager.NavigateTo($"/mealrecipe/{index}");
     }
 }
