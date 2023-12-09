@@ -1,5 +1,5 @@
 ﻿@page "/createmeal"
-@using AIChef.Shared
+@using AIChef.Shared;
 @using Microsoft.AspNetCore.Components.Forms;
 @using System.ComponentModel.DataAnnotations;
 @inject NavigationManager navigationManager;
@@ -66,13 +66,28 @@
 
 
 @code {
+
+    [CascadingParameter]
+    private RecipeState? rState { get; set; }
+
     private EditContext? editContext;
     private List<Ingredient> ingredients = new List<Ingredient>();
     private Meal meal = new();
 
+
+
     protected override void OnInitialized()
     {
+        @* If there are no values in state, force reload*@
+        if(rState is null)
+        {
+            navigationManager.NavigateTo("/", forceLoad: true);
+            return;
+        }
         editContext = new(meal);
+
+        meal.mealtime = rState.MealTime;
+        ingredients = rState.Ingredients;
     }
 
     private class Meal
@@ -109,6 +124,9 @@
 
     private void SubmitIngredients()
     {
+        rState.MealTime = meal.mealtime;
+        rState.Ingredients = ingredients;
+
         navigationManager.NavigateTo("/mealideas");
     }
 }

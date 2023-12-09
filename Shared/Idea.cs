@@ -1,4 +1,4 @@
-﻿namespace AIChef.Client.Shared
+﻿namespace AIChef.Shared
 {
     public class Idea
     {
