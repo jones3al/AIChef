@@ -345,9 +345,10 @@ namespace AIChef.Server.ChatEndpoint
     {
         /// <summary>
         /// The image model to use. Sent explicitly rather than relying on the endpoint's
-        /// implicit default, which was the long-since superseded dall-e-2.
+        /// implicit default, which is the long-since retired dall-e-2. The dall-e models
+        /// are unavailable on newer accounts, which report them as non-existent.
         /// </summary>
-        public string Model { get; set; } = "dall-e-3";
+        public string Model { get; set; } = "gpt-image-1";
 
         /// <summary>
         /// A text description of the image you would like to generate
@@ -362,21 +363,29 @@ namespace AIChef.Server.ChatEndpoint
 
         /// <summary>
         /// The size of the image(s) that should be generated.<br />
-        /// Valid options depend on the model. dall-e-3 accepts: <br /><br />
+        /// Valid options depend on the model. gpt-image-1 accepts: <br /><br />
         ///
-        /// "1024x1024" <br />
-        /// "1792x1024"<br />
-        /// "1024x1792"<br />
-        /// <br />
-        /// The smaller 256x256 and 512x512 sizes are dall-e-2 only.
+        /// "1024x1024" (square) <br />
+        /// "1536x1024" (landscape)<br />
+        /// "1024x1536" (portrait)<br />
+        /// "auto"<br />
         /// </summary>
         public string? Size { get; set; } = "1024x1024";
 
         /// <summary>
-        /// The format of the response. Either "url" or "b64_json". Defaults to "url"
+        /// Rendering quality - "low", "medium", "high", or "auto". This is the main cost
+        /// lever on gpt-image-1: high costs several times what low does for the same size.
+        /// </summary>
+        public string? Quality { get; set; }
+
+        /// <summary>
+        /// The format of the response, for models that offer a choice. Either "url" or
+        /// "b64_json".<br />
+        /// <b>Leave this null for gpt-image-1</b>, which does not accept the parameter at
+        /// all and always returns base64.
         /// </summary>
         [JsonPropertyName("response_format")]
-        public string? ResponseFormat { get; set; } = "url"; // "url" or "b64_json"
+        public string? ResponseFormat { get; set; }
 
         /// <summary>
         /// A unique ID of the user requesting this image - optional
