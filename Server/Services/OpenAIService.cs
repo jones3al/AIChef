@@ -141,14 +141,20 @@ namespace AIChef.Server.Services
         private readonly ILogger<OpenAIService> _logger;
         private readonly string? _apiKey;
         private readonly string _chatModel;
+        private readonly string _imageModel;
+        private readonly string _imageQuality;
 
         public OpenAIService(IConfiguration configuration, ILogger<OpenAIService> logger)
         {
             _configuration = configuration;
             _logger = logger;
 
-            // Overridable via config so the model can be changed without a code change.
+            // Overridable via config so the models can be changed without a code change.
             _chatModel = _configuration["OpenAi:ChatModel"] ?? "gpt-4o-mini";
+            _imageModel = _configuration["OpenAi:ImageModel"] ?? "gpt-image-1";
+
+            // The image is a decorative thumbnail, so the cheapest tier is plenty.
+            _imageQuality = _configuration["OpenAi:ImageQuality"] ?? "low";
 
             // Accept the conventional OPENAI_API_KEY name too, so the key is found
             // regardless of which convention the host (Railway, Docker, etc.) was configured with.
@@ -343,11 +349,12 @@ namespace AIChef.Server.Services
 
             ImageGenerationRequest request = new()
             {
-                Prompt = userPrompt,
-                // Ask for the bytes rather than a URL. The URL OpenAI returns expires
-                // within the hour, so it cannot be cached, and re-generating an image is
-                // by far the most expensive thing this app does.
-                ResponseFormat = "b64_json"
+                Model = _imageModel,
+                Quality = _imageQuality,
+                Prompt = userPrompt
+                // ResponseFormat is deliberately left unset: gpt-image-1 rejects the
+                // parameter outright and always returns the image as base64, which is
+                // what the cache wants anyway.
             };
 
             using HttpResponseMessage httpResponse = await PostToOpenAI(url, request);

@@ -67,7 +67,7 @@ namespace AIChef.Server.Controllers
         {
             if (string.IsNullOrWhiteSpace(title))
             {
-                return SampleData.RecipeImage;
+                return NoImage();
             }
 
             // Serve an image we have already paid to generate rather than generating it
@@ -85,14 +85,26 @@ namespace AIChef.Server.Controllers
 
             if (string.IsNullOrEmpty(base64Image))
             {
-                return generated ?? SampleData.RecipeImage;
+                // Nothing was generated. Some models answer with a URL instead of bytes,
+                // so pass one through if it is there, but otherwise report no image at
+                // all rather than substituting an unrelated stock photo - a stand-in is
+                // indistinguishable from a real result and hides the failure.
+                string? generatedUrl = generated?.Data?.FirstOrDefault()?.Url;
+
+                return string.IsNullOrEmpty(generatedUrl) ? NoImage() : AsRecipeImage(generatedUrl);
             }
 
             string? url = await _imageCache.SaveAsync(title, base64Image);
 
-            // If it could not be cached the image is still perfectly good, so hand back
-            // the URL OpenAI gave us if there was one rather than failing the request.
-            return url is not null ? AsRecipeImage(url) : (generated ?? SampleData.RecipeImage);
+            if (url is not null)
+            {
+                return AsRecipeImage(url);
+            }
+
+            // The image generated but could not be cached. It has already been paid for,
+            // so send it inline rather than discarding it. The cache failure is logged,
+            // and this costs a large response body only while the cache is broken.
+            return AsRecipeImage($"data:image/png;base64,{base64Image}");
         }
 
         /// <summary>
@@ -117,6 +129,15 @@ namespace AIChef.Server.Controllers
         private static RecipeImage AsRecipeImage(string url) => new()
         {
             Data = new[] { new ImageData { Url = url } }
+        };
+
+        /// <summary>
+        /// An empty result. The recipe page hides the image entirely when no URL comes
+        /// back, so the recipe still renders - just without a picture.
+        /// </summary>
+        private static RecipeImage NoImage() => new()
+        {
+            Data = Array.Empty<ImageData>()
         };
     }
 }
