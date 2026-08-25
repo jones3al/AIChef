@@ -8,32 +8,44 @@
 @if (isLoaded == true)
 {
     <div class="container">
-        <h3 class="mt-5">Pick a meal to make</h3>
+        @if (ideas.Count > 0)
+        {
+            <h3 class="mt-5">Pick a meal to make</h3>
 
-        <div class="list-group">
-            @foreach (var idea in ideas)
-            {
-                <button @onclick="() => GetRecipe(idea.Index)" class="list-group-item list-group-item-action list-group-item-success p-2">
-                    <div class="d-flex w-100 justify-content-sm-between">
-                        <h2 class="mb-1 fw-bold">@idea.Title</h2>
-                    </div>
-                     <p class="mb-1">@idea.Description</p>
-                   
-                </button>
-            }
-        </div>
+            <div class="list-group">
+                @foreach (var idea in ideas)
+                {
+                    <button @onclick="() => GetRecipe(idea.Index)" class="list-group-item list-group-item-action list-group-item-success p-2">
+                        <div class="d-flex w-100 justify-content-sm-between">
+                            <h2 class="mb-1 fw-bold">@idea.Title</h2>
+                        </div>
+                         <p class="mb-1">@idea.Description</p>
+
+                    </button>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning mt-5" role="alert">
+                <h4 class="alert-heading">No recipe ideas came back</h4>
+                <p class="mb-0">@errorMessage</p>
+            </div>
+            <button class="btn btn-success rounded" @onclick="Retry">Try Again</button>
+        }
     </div>
 }
 else
 {
   <ChefSpinner></ChefSpinner>
- 
+
 }
 
 
 @code {
     private List<Idea> ideas = new List<Idea>();
     private bool isLoaded = false;
+    private string errorMessage = "";
 
 
     [CascadingParameter]
@@ -46,35 +58,42 @@ else
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (rState is null)
         {
             navigationManager.NavigateTo("/", forceLoad: true);
-            return; 
+            return;
         }
 
         if (rState.Ideas.Count<1)
         {
-            GetIdeas();
+            await GetIdeas();
         }
         else
         {
             isLoaded = true;
             ideas = rState.Ideas;
-            StateHasChanged();
         }
 
     }
 
-    private async void GetIdeas()
+    private async Task Retry()
+    {
+        await GetIdeas();
+    }
+
+    // Returns a Task rather than void so failures are observable and the caller can await it.
+    // As async void, an exception here left isLoaded false and the spinner up forever.
+    private async Task GetIdeas()
     {
         string baseuri = "Recipe/GetRecipeIdeas";
         isLoaded = false;
+        errorMessage = "";
 
         RecipeParms recipeParms = new RecipeParms()
             {
-                MealTime = rState.MealTime,
+                MealTime = rState!.MealTime,
                 Ingredients = rState.Ingredients
             };
 
@@ -85,14 +104,24 @@ else
 
             response.EnsureSuccessStatusCode();
 
-            ideas = (await response.Content.ReadFromJsonAsync<List<Idea>>())!;
+            ideas = (await response.Content.ReadFromJsonAsync<List<Idea>>()) ?? new List<Idea>();
             rState.Ideas = ideas;
-            isLoaded = true;
-            StateHasChanged();
+
+            if (ideas.Count < 1)
+            {
+                errorMessage = "The recipe service returned no ideas. Check the server logs for the error reported by OpenAI.";
+            }
         }
-        catch
+        catch (Exception ex)
         {
-            Console.WriteLine("Error! Could not fetch recipe ideas");
+            ideas = new List<Idea>();
+            errorMessage = $"Could not reach the recipe service: {ex.Message}";
+            Console.WriteLine($"Error! Could not fetch recipe ideas: {ex}");
+        }
+        finally
+        {
+            // Always clears the spinner, so a failure surfaces instead of hanging.
+            isLoaded = true;
         }
     }
 

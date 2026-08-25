@@ -15,6 +15,9 @@ namespace AIChef
             builder.Services.AddRazorPages();
             builder.Services.AddScoped<IOpenAIAPI, OpenAIService>();
 
+            // Singleton so every request shares one cache directory.
+            builder.Services.AddSingleton<IRecipeImageCache, RecipeImageCache>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
