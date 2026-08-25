@@ -8,14 +8,29 @@
 
 @if(isLoaded == true)
 {
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="container">
+            <div class="alert alert-warning mt-5" role="alert">
+                <h4 class="alert-heading">Could not generate this recipe</h4>
+                <p class="mb-0">@errorMessage</p>
+            </div>
+            <button class="btn btn-success rounded" @onclick="Retry">Try Again</button>
+        </div>
+    }
+    else
+    {
     <div class="container mt-5 h-100">
         <div class="d-flex flex-column flex-lg-row justify-content-start">
+            @if (!string.IsNullOrEmpty(recipeImageUrl))
+            {
             <div class="text-center text-lg-start">
-                <img src="@recipeImageUrl" class="rounded-3 recipeImage" />
+                <img src="@recipeImageUrl" class="rounded-3 recipeImage" alt="@recipe?.Title" />
             </div>
+            }
             <div class="flex-grow-1 px-3">
-                <h1 class="fw-bold">@recipe.Title</h1>
-                <p>@recipe.Summary</p>
+                <h1 class="fw-bold">@recipe?.Title</h1>
+                <p>@recipe?.Summary</p>
                 <div class="text-end">
                     <button class="btn btn-success d-print-none" @onclick="Print">Print</button>
                 </div>
@@ -25,7 +40,7 @@
             <div class="col mt-3">
                 <h2>Ingredients</h2>
                 <ul>
-                    @foreach (var item in recipe.Ingredients)
+                    @foreach (var item in recipe?.Ingredients ?? Array.Empty<string>())
                     {
                         <li>@item</li>
                     }
@@ -34,7 +49,7 @@
             <div class="col mt-3">
                 <h2>Instructions</h2>
                 <ul>
-                    @foreach (var item in recipe.Instructions)
+                    @foreach (var item in recipe?.Instructions ?? Array.Empty<string>())
                     {
                         <li>@item</li>
                     }
@@ -42,6 +57,7 @@
             </div>
         </div>
     </div>
+    }
 }
 else
 {
@@ -65,20 +81,28 @@ else
 
     private string? title;
     private string recipeImageUrl = string.Empty;
+    private string errorMessage = "";
     private Recipe? recipe = new Recipe();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        GetRecipe();
+        await GetRecipe();
     }
 
-    private async void GetRecipe()
+    // Returns a Task rather than void so failures are observable and awaited.
+    private async Task GetRecipe()
     {
         string baseUri = "Recipe/GetRecipe";
 
         try
         {
-            title = rState.Ideas.FirstOrDefault(i => i.Index == Index).Title;
+            if (rState is null)
+            {
+                Navigation.NavigateTo("/", forceLoad: true);
+                return;
+            }
+
+            title = rState.Ideas.FirstOrDefault(i => i.Index == Index)?.Title;
 
             RecipeParms recipeParms = new RecipeParms()
                 {
@@ -86,26 +110,63 @@ else
                     Ingredients = rState.Ingredients,
                     SelectedIdea = title
                 };
-            //get recipe image
-            HttpResponseMessage responseImage = await Http.GetAsync($"Recipe/GetRecipeImage?title={HttpUtility.UrlEncode(title)}");
-            var recipeImage = await responseImage.Content.ReadFromJsonAsync<RecipeImage>();
-            recipeImageUrl = recipeImage!.Data[0].Url;
 
-            //get the recipe
+            // Get the recipe first. The image is decorative, so fetching it first meant a
+            // failed image request prevented the recipe from ever loading.
             HttpResponseMessage responseRecipe = await Http.PostAsJsonAsync(baseUri, recipeParms);
 
             responseRecipe.EnsureSuccessStatusCode();
 
-            recipe = await responseRecipe.Content.ReadFromJsonAsync<Recipe>();
+            recipe = await responseRecipe.Content.ReadFromJsonAsync<Recipe>() ?? new Recipe();
 
+            // Render the recipe straight away rather than waiting on the image. Image
+            // generation takes far longer than the recipe itself, so holding the render
+            // until it finished meant staring at the spinner for the sum of both calls.
             isLoaded = true;
             StateHasChanged();
 
+            //get recipe image, then re-render to slot it in
+            await GetRecipeImage();
         }
-        catch 
+        catch (Exception ex)
         {
-            Console.WriteLine("Error! Could not Generate Recipe");
+            errorMessage = ex.Message;
+            Console.WriteLine($"Error! Could not Generate Recipe: {ex}");
         }
+        finally
+        {
+            // Always clears the spinner, so a failure surfaces instead of hanging.
+            isLoaded = true;
+        }
+    }
+
+    private async Task GetRecipeImage()
+    {
+        try
+        {
+            HttpResponseMessage responseImage = await Http.GetAsync($"Recipe/GetRecipeImage?title={HttpUtility.UrlEncode(title)}");
+
+            responseImage.EnsureSuccessStatusCode();
+
+            var recipeImage = await responseImage.Content.ReadFromJsonAsync<RecipeImage>();
+
+            // Data is null whenever image generation fails, so it must be checked before
+            // indexing into it - dereferencing it was what left the page stuck loading.
+            recipeImageUrl = recipeImage?.Data?.FirstOrDefault()?.Url ?? string.Empty;
+        }
+        catch (Exception ex)
+        {
+            // A missing image must never stop the recipe from rendering.
+            recipeImageUrl = string.Empty;
+            Console.WriteLine($"Warning! Could not fetch recipe image: {ex.Message}");
+        }
+    }
+
+    private async Task Retry()
+    {
+        isLoaded = false;
+        errorMessage = "";
+        await GetRecipe();
     }
 
     private async Task Print()
