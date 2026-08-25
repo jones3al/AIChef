@@ -2,6 +2,12 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
+
+# .NET 8 changed the default container port from 80 to 8080, so this must be set
+# explicitly to match the port exposed below. Without it the app listens on 8080
+# while the host routes to 80, and every request fails with a 502.
+ENV ASPNETCORE_HTTP_PORTS=80
+
 EXPOSE 80
 EXPOSE 443
 

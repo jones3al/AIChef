@@ -110,6 +110,10 @@ a stand-in is indistinguishable from a real result and hides the failure.
 The `Dockerfile` publishes the Server project, which serves the WebAssembly client as
 static files. Railway builds it directly; set `OpenAi__OpenAiKey` as a service variable.
 
+The Dockerfile sets `ASPNETCORE_HTTP_PORTS=80` to match its `EXPOSE 80`. This is load
+bearing: .NET 8 changed the default container port to 8080, so without it the app listens
+on 8080 while the host routes to 80 and every request fails with a 502.
+
 The image cache lives in the container's temp directory, so it resets on each redeploy and
 the first view of a given recipe pays again. Mount a volume and point
 `OpenAi__ImageCachePath` at it to keep the cache across deploys.
