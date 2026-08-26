@@ -87,7 +87,11 @@
         editContext = new(meal);
 
         meal.mealtime = rState.MealTime;
-        ingredients = rState.Ingredients;
+
+        // A copy, not the list itself. Editing state's own list would apply every Add and
+        // Clear immediately, so navigating away without pressing Generate would still have
+        // changed the meal - and nothing would be left to compare against on submit.
+        ingredients = new List<Ingredient>(rState.Ingredients);
     }
 
     private class Meal
@@ -124,8 +128,7 @@
 
     private void SubmitIngredients()
     {
-        rState.MealTime = meal.mealtime;
-        rState.Ingredients = ingredients;
+        rState!.SetMeal(meal.mealtime, ingredients);
 
         navigationManager.NavigateTo("/mealideas");
     }
