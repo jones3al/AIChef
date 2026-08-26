@@ -17,7 +17,9 @@ CreateMeal  ──▶  MealIdeas  ──▶  MealRecipe
 
 The three pages share state through `RecipeState`, a cascading value in
 `Client/Shared/RecipeState.razor`, so the chosen ingredients survive navigation without a
-round trip.
+round trip. The five ideas are held there too, so backing out of a recipe doesn't pay to
+generate them again — `RecipeState.SetMeal` discards them as soon as the meal time or
+ingredients change, since ideas only describe the inputs that produced them.
 
 Recipe ideas and the recipe itself both come from a chat completion that is *forced* to
 call a tool, using `tool_choice` with `strict: true`. The schema is declared in

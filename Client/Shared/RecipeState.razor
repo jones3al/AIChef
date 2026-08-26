@@ -8,8 +8,32 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    public string MealTime { get; set; } = "Breakfast";
+    private const string DefaultMealTime = "Breakfast";
+
+    public string MealTime { get; set; } = DefaultMealTime;
     public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
     public List<Idea> Ideas { get; set; } = new List<Idea>();
 
+    /// <summary>
+    /// Records the meal to generate ideas for, discarding any cached ideas that were
+    /// generated from different inputs. Ideas are kept so that coming back from a recipe
+    /// doesn't pay to generate them a second time, but they only describe the meal time and
+    /// ingredients that produced them - holding them across a change would show the
+    /// previous meal's ideas for the new one.
+    /// </summary>
+    public void SetMeal(string? mealTime, List<Ingredient> ingredients)
+    {
+        string newMealTime = string.IsNullOrWhiteSpace(mealTime) ? DefaultMealTime : mealTime;
+
+        bool sameIngredients = ingredients.Select(x => x.Description)
+                                          .SequenceEqual(Ingredients.Select(x => x.Description));
+
+        if (newMealTime != MealTime || !sameIngredients)
+        {
+            Ideas.Clear();
+        }
+
+        MealTime = newMealTime;
+        Ingredients = ingredients;
+    }
 }
